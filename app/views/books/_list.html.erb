@@ -1,0 +1,19 @@
+<% if book.errors.any? %>
+  <div class="alert alert-danger">
+    <h4><%= book.errors.count %> 件のエラーが発生しました</h4>
+    <ul>
+      <% book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: book  do |f| %>  # local:trueを追加
+
+  <h4>ショップ名</h4>
+  <%= f.text_field :title %>
+  <h4>説明</h4>
+  <%= f.text_area :body %>
+  <%= f.submit 'Create Book' %>
+<% end %>

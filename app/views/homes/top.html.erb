@@ -1,0 +1,23 @@
+<h2>top<h2>
+<h1>設計書</h1>
+<i class="fa-solid fa-book"></i>
+
+<h1>相違点</h1>
+<ul>
+  <li>マイぺージに飛ばなくともプロフィールを'/users/:id'で編集できるようになっている</li>
+  <li>投稿フォームに関してもビーにそのまま記載がある</li>
+  <li>投稿したユーザーが表示されるようになっている</li>
+  <li>投稿したユーザーのSHOWをクリックすると、その人が投稿した一覧が見れる。</li>
+  <li>常にユーザー情報に関しては表示されている→全てのビューに記載しておけばいい</li>
+  <li>ログインとサインインも、ヘッダーの部分で導入すルべき</li>
+</ul>
+<div class="container">
+<div class="row">
+<%= link_to "Log in", new_user_session_path,  class: "btn btn-primary" %>
+
+</div>
+<div class="row">
+<%= link_to "Sign up", new_user_registration_path,  class: "btn btn-success"  %>
+
+</div>
+</div>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://kit.fontawesome.com/ac471676cb.js" crossorigin="anonymous"></script>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <div class="row">
+    <ul>
+    <li>
+      <%= link_to 'Bookers', root_path %>
+    </li>
+    <% if user_signed_in? %>
+      <li>
+        <%= link_to user_path(current_user.id) do %>
+          <i class="fas fa-home"></i> Home
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to users_path do %>
+          <i class="fas fa-users"></i> Users
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to books_path do %>
+          <i class="fas fa-book-open"></i> Books
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+          <i class="fas fa-sign-out-alt"></i> Log out
+        <% end %>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to root_path do %>
+          <i class="fas fa-home"></i> Home
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to about_path do %>
+          <i class="fas fa-link"></i> About
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to new_user_registration_path do %>
+          <i class="fas fa-user-plus"></i> Sign up
+        <% end %>
+      </li>
+  
+      <li>
+        <%= link_to new_user_session_path do %>
+          <i class="fas fa-sign-in-alt"></i> Log in
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+  
+    </div>
+
+  </head>
+
+  <body>
+  <% flash.each do |key, message| %>
+    <div class="alert alert-<%= key == 'notice' ? 'success' : 'danger' %>">
+      <%= key == 'alert' || key == 'error' ? "Error: #{message}" : message %>
+    </div>
+  <% end %>
+    <%= yield %>
+  </body>
+
+<footer>
+  <div class="max-auto">
+    <p>CopyRight Infratop</p>
+  </div>
+</footer>
+
+</html>
+
+
+
+
+
+
+
+
+

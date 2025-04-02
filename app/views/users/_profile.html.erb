@@ -1,0 +1,21 @@
+<div>
+  <h3>name</h3> 
+  <h3>introduction</h3>
+  <% if user == current_user %>
+    <%= current_user.name %>
+    <%= current_user.introduction %>
+    <%= image_tag current_user.get_profile_image(100, 100) %>
+    <%= link_to 'Update User', edit_user_path(current_user.id) %>
+  <% else %>
+
+
+    <%= user.name %>
+    <%= user.introduction %>
+    <%= image_tag user.get_profile_image(100, 100) %>
+    <%= link_to 'Update User', edit_user_path(user.id) %>
+  <% end %>
+  <%= link_to user_path(user) do %>
+    <i class="fa-solid fa-house"></i>
+  <% end %>
+</div>
+
