@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-<%= form_with model: book  do |f| %>  # local:trueを追加
+<%= form_with model: book , local: true do |f| %>  # local:trueを追加
 
   <h4>ショップ名</h4>
   <%= f.text_field :title %>

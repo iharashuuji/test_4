@@ -17,6 +17,7 @@ class BooksController < ApplicationController
       @books = Book.includes(:user).page(params[:page]).per(5)
       @book.title = ""
       @user = current_user
+      @bookss = Book.new
       render :index # renderは、ビューに飛ばすだけで、
     end
   end
@@ -34,7 +35,8 @@ class BooksController < ApplicationController
   def index
     @user = current_user
     @books = Book.includes(:user).page(params[:page])
-    @book = Book.new
+    @bookss = Book.new
+    Rails.logger.debug "DEBUG: @book = #{@book.inspect}"
   end
   def show
     @book = Book.find(params[:id])

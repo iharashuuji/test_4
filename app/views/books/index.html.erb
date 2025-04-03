@@ -11,26 +11,19 @@
     <tr>
       <td><i class="fa-solid fa-book"></i> New book</td>
     </tr>
-    <% if @book.errors.any? %>
+    <% if @bookss.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= @book.errors.count %> 件のエラーが発生しました</h4>
+      <h4><%= @bookss.errors.count %> 件のエラーが発生しました</h4>
       <ul>
-        <% @book.errors.full_messages.each do |message| %>
+        <% @bookss.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
   </tbody>
-  <%= form_with model: @book, local: true do |f| %>
-    <h4>ショップ名</h4>
-    <%= f.text_field :title %>
-    <h4>説明</h4>
-    <%= f.text_area :body %>
-    <%= f.submit 'Create Book' %>
-  <% end %>
-  
-  
+<%= render "books/list",book: @bookss  %> 
+
     </table>
 
     </div>

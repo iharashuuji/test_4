@@ -1,95 +1,101 @@
 <div class="container">
-<div class="row">
-  <div class="col-md-3">
-  <table class="table">
-    <tr>User info</tr>
-    <tbody>
-    <tr>
-      <td><i class="fa-solid fa-user-cog"></i> User info</td>
-    </tr>
-  
-    <%= render 'users/profile', user: @user %>
-    <tr>
-      <td><i class="fa-solid fa-book"></i> New book</td>
-    </tr>
-    <%= render 'books/list', book: @bookss %>
-  </tbody>
-  </table>
+  <div class="row">
+    <div class="col-md-3">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td><i class="fa-solid fa-user-cog"></i> User info</td>
+          </tr>
+          <%= render 'users/profile', user: @user %>
+
+          <tr>
+            <td><i class="fa-solid fa-book"></i> New book</td>
+          </tr>
+          <%= render 'books/list', book: @bookss %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-8 offset-md-1">
+      
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-3">
+          <% if @book.favorited_by?(current_user) %>
+            <%= link_to book_favorites_path(@book), method: :delete, remote: true, class: "favorite-btn", data: { testid: "favorite-link" } do %>
+              ♥ <i class="fa-solid fa-heart"></i> <%= @book.favorites.count %> いいね
+            <% end %>
+          <% else %>
+            <%= link_to book_favorites_path(@book), method: :post, remote: true, class: "favorite-btn", data: { testid: "favorite-link" } do %>
+              ♡ <i class="fa-regular fa-heart"></i> <%= @book.favorites.count %> いいね
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div class="me-2">
+            <%= image_tag 'no_image.jpg', width: 50, height: 50 %>
+          </div>
+          <div>
+            <strong><%= @book.user.name %></strong><br>
+            投稿日時：<%= @book.created_at.strftime('%Y/%m/%d') %>
+          </div>
+        </div>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Book detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>タイトル：</strong> <%= @book.title %></td>
+          </tr>
+          <tr>
+            <td><strong>内容：</strong> <%= @book.body %></td>
+          </tr>
+          <tr>
+            <td>
+              <%= link_to "Show", book_path(@book) %>
+              <% if @book.user == current_user %>
+                <%= link_to "Edit", edit_book_path(@book), class: "btn btn-sm btn-primary" %>
+                <%= link_to "Destroy", book_path(@book), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: '本当に削除しますか？' } %>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-4">
+        <h5>コメント一覧（<%= @book.book_comments.count %>件）</h5>
+        <% @book.book_comments.each do |comment| %>
+          <div class="d-flex align-items-start mb-2">
+            <div class="me-2">
+              <%= image_tag comment.user.get_profile_image(50, 50), class: "rounded-circle" %>
+            </div>
+            <div>
+              <strong><%= comment.user.name %></strong>（<%= comment.created_at.strftime('%Y/%m/%d') %>）
+              <p><%= comment.comment %></p>
+              <% if comment.user == current_user %>
+                <%= link_to "削除", book_book_comment_path(@book, comment), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "text-danger small" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="mt-3">
+          <%= form_with model: [@book, @comment], local: true do |f| %>
+            <div class="form-group">
+              <%= f.text_area :comment, rows: '3', class: "form-control", placeholder: "コメントをここに入力..." %>
+            </div>
+            <div class="mt-2">
+              <%= f.submit "送信する", class: "btn btn-primary btn-sm" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
   </div>
-<div class="col-md-8 offset-md-1">
-#####
-<% if @book.favorited_by?(current_user) %>
-  <%= link_to book_favorites_path(@book), method: :delete, remote: true, class: "favorite-btn", data: { testid: "favorite-link" } do %>
-    ♥ <i class="fa-solid fa-heart"></i> <%= @book.favorites.count %> いいね
-  <% end %>
-<% else %>
-  <%= link_to book_favorites_path(@book), method: :post, remote: true, class: "favorite-btn", data: { testid: "favorite-link" } do %>
-    ♡ <i class="fa-regular fa-heart"></i> <%= @book.favorites.count %> いいね
-  <% end %>
-<% end %>
-
-
-#####
-<table>
-  <th>Book detail</th>
-  <th><%= @book.title %></th>
-  <th><%= @book.body %></th>
-  <th></th>
-
-  <th>投稿日時：<%= @book.created_at.strftime('%Y/%m/%d') %></th>
-  <%= link_to "Show", book_path(@book) %>
-  <% if @book.user == current_user %>
-
-    <%= link_to user_path(current_user) do %>
-    <div>
-      投稿ユーザー画像：<%= image_tag 'no_image.jpg' %>
-    </div>
-    <div>
-      ユーザーネーム：<%= @book.user.name %>
-    </div>
-    <% end %>
-
-
-    <%= link_to "Destroy", book_path(@book), method: :delete %>
-    <%= link_to "Edit", edit_book_path(@book) %>
-  <% else %>
-  
-  <%= link_to user_path(@user) do %>
-    <div>
-      投稿ユーザー画像：<%= image_tag 'no_image.jpg' %>
-    </div>
-    <div>
-      ユーザーネーム：<%= @book.user.name %>
-    </div>
-    <% end %>
-
-    <%=link_to @book.title, book_path(@book) %>
-  <% end %>
-</table>
 </div>
-</div>
-</div>
-
-# post comment function
-<div>
-  <p>コメント件数：<%= @book.book_comments.count %></p>
-  <% @book.book_comments.each do |comment| %>
-    <p><%= image_tag comment.user.get_profile_image(100,100) %></p>
-    <%= comment.user.name %>
-    <%= comment.created_at.strftime('%Y/%m/%d') %>
-    <%= comment.comment %>
-    <% if comment.user == current_user %>
-      <%= link_to "Destroy", book_book_comment_path(@book, comment), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "comment-destroy"  %>
-    <% end %>
-  <% end %>
-
-</div>
-<div>
-  <%= form_with model: [@book, @comment] do |f| %>
-    <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
-    <%= f.submit "送信する" %>
-  <% end %>
-  <%# ログで送信されるパラメータを確認 %>
-<%= debug(params[:comment]) %>
-</div>
-
