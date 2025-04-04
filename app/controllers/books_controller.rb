@@ -5,19 +5,18 @@ class BooksController < ApplicationController
     @book = Book.new
   end
   def create
-    @book = Book.new(post_image_params)
-    @book.user_id = current_user.id
+    @bookss = Book.new(post_image_params)
+    @bookss.user_id = current_user.id
 
     
-    if @book.save
+    if @bookss.save
       
       flash[:notice] = "Book successfully posted"
-      redirect_to book_path(@book) # redirect_to showならshowアクション内のインスタンス変数を用いれる。
+      redirect_to book_path(@bookss) # redirect_to showならshowアクション内のインスタンス変数を用いれる。
     else
       @books = Book.includes(:user).page(params[:page]).per(5)
-      @book.title = ""
+      @bookss.title = ""
       @user = current_user
-      @bookss = Book.new
       render :index # renderは、ビューに飛ばすだけで、
     end
   end
